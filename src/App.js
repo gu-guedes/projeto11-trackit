@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes} from "react-router-dom";
+import Cadastro from "./Cadastro";
+import GlobalStyle from "./GlobalStyle";
+import Hoje from "./Habitos";
+import Login from "./Login";
+import React, { useState } from "react";
+import { AuthContext } from "./providers/auth";
+import Habitos from "./Habitos";
 
 function App() {
+  const {user, setUser} = React.useContext(AuthContext)
+  const {habitos, setHabitos} = React.useContext(AuthContext)
+  console.log(habitos)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+      <GlobalStyle />
+      <Routes>
+      <Route path="/" element={<Login setUser={setUser}/>}/>
+      <Route path="/cadastro" element={<Cadastro />}/>
+      <Route path="/habitos" element={<Habitos setHabitos={setHabitos}/>}/>
+      </Routes>
+    </BrowserRouter>
+
+
+  )
 }
 
 export default App;
