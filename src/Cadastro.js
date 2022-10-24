@@ -37,32 +37,35 @@ export default function Cadastro() {
         <form onSubmit={fazerCadastro}>
             <ContainerCadastro>
                 <img src="./images/logo.jpg" />
-                <input 
+                <input data-identifier="input-email"
                 disabled={login}
                 required
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder=" email"></input>
                 <input 
+                data-identifier="input-password"
                 disabled={login}
                 required
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder=" senha"></input>
                 <input 
+                data-identifier="input-name"
                 disabled={login}
                 required
                 value={name}
                 onChange={e => setName(e.target.value)}
                 placeholder=" nome"></input>
                 <input 
+                data-identifier="input-photo"
                 disabled={login}
                 required
                 value={image}
                 onChange={e => setImage(e.target.value)}
                 placeholder=" foto"></input>
                 <button disabled={login} >Cadastrar</button>
-                <Link to="/"><p>Já tem uma conta? Faça login!</p></Link>
+                <Link to="/"><p data-identifier="back-to-login-action">Já tem uma conta? Faça login!</p></Link>
             </ContainerCadastro>
             </form>
         </>

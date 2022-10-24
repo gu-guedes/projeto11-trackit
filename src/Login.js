@@ -20,7 +20,7 @@ export default function Login(props) {
         promise.then((res) => {
             console.log(res.data)
             props.setUser(res.data)
-            navigate("/habitos")
+            navigate("/hoje")
         })
         promise.catch((err) => {
             alert(err.response.data.message)
@@ -32,21 +32,24 @@ export default function Login(props) {
             <ContainerLogin>
                 <img src="./images/logo.jpg" />
                 <input 
+                data-identifier="input-email"
                 disabled={login}
                 required
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder=" email"></input>
                 <input 
+                data-identifier="input-password"
                 disabled={login}
                 required
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder=" senha"></input>
                 <button 
+                data-identifier="login-btn"
                 disabled={login}
                 type="submit">Entrar</button>
-                <Link to="/cadastro"><p>Não tem uma conta? Cadastre-se!</p></Link>
+                <Link to="/cadastro"><p data-identifier="sign-up-action">Não tem uma conta? Cadastre-se!</p></Link>
             </ContainerLogin>
         </form>
         </>
@@ -91,7 +94,8 @@ button{
     font-family: 'Lexend Deca', sans-serif;
 }
 button:disabled{
-    background-color: red;
+    background-color: #52B6FF;
+    opacity: 60%;
 
 }
 p{

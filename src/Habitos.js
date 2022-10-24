@@ -5,60 +5,45 @@ import { CircularProgressbar, buildStyles, CircularProgressbarWithChildren } fro
 import AddHabito from "./AddHabito"
 import axios from "axios"
 import { useState, useEffect } from "react"
+import ListaHabitos from "./ListaHabitos"
+import { Link } from "react-router-dom"
 export default function Habitos(props) {
-    const { user } = React.useContext(AuthContext)
-    const percentage = 66
+    const { user, habitos, setHabitos, porcentagem } = React.useContext(AuthContext)
     const [abrirFormulario, setAbrirFormulario] = useState(false)
+    const [abrirLista, setAbrirLista] = useState(false)
     
-
-    useEffect(() => {
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjIwMiwiaWF0IjoxNjY2Mzc2OTUxfQ.NadZNeS7do4gIWNmw0r-OtN5qsDZ_0VZORH0K6xku7g"
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }
-
-        const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits'
-        const promise = axios.get(URL, config)
-
-        promise.then((res) => {
-            props.setHabitos(res.data)
-        })
-        promise.catch((err) => {
-            console.log(err.response.data)
-        })
-    }, [])
-    function adicionarHabito(){
+    function adicionarHabito() {
         setAbrirFormulario(true)
     }
 
-     return (
+    return (
         <>
             <ContainerTopo>
                 <p>TrackIt</p>
-                <img src={user.image}></img>
+                <img data-identifier="avatar" src={user.image}></img>
             </ContainerTopo>
             <ContainerConteudo>
                 <MeusHabitos>
                     <h1>Meus hábitos</h1>
-                    <BotaoMais onClick={adicionarHabito}>
+                    <BotaoMais data-identifier="create-habit-btn" onClick={adicionarHabito}>
                         <ion-icon name="add-outline"></ion-icon>
                     </BotaoMais>
                 </MeusHabitos>
-                {abrirFormulario ? <AddHabito setAbrirFormulario={setAbrirFormulario} /> : <></>}
-                <SemHabito>
-                    Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
+                {abrirFormulario ? <AddHabito setAbrirFormulario={setAbrirFormulario} setAbrirLista={setAbrirLista} /> : <></>}
+                {abrirLista || habitos.length > 0 ? <ListaHabitos /> : <></>}
+                {habitos.length == 0 ? <SemHabito>
+                    <p>
+                    Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
 
-                </SemHabito>
+                </SemHabito> : <></>}
 
             </ContainerConteudo>
             <ContainerMenu>
-                <p>Hábitos</p>
+                <p data-identifier="habit-page-action" >Hábitos </p>
                 <div style={{ width: 91, height: 91, marginBottom: 30 }}>
 
                     <CircularProgressbarWithChildren
-                        value={percentage}
+                        value={props.progressao}
                         background
                         backgroundPadding={6}
                         styles={buildStyles({
@@ -66,13 +51,14 @@ export default function Habitos(props) {
                             textColor: "#fff",
                             pathColor: "#fff",
                             trailColor: "transparent"
-                        })}> <div style={{ fontSize: 18, marginTop: -10, color: "#fff", fontFamily: 'Lexend Deca' }}>Hoje</div></CircularProgressbarWithChildren>
+                        })}> <Link to="/hoje"><div style={{ fontSize: 18, marginTop: -10, color: "#fff", fontFamily: 'Lexend Deca' }}>Hoje</div></Link></CircularProgressbarWithChildren>
                 </div>
                 <p>Histórico</p>
             </ContainerMenu>
         </>
-    ) 
+    )
 }
+
 
 const ContainerTopo = styled.div`
 position: fixed;
@@ -154,9 +140,11 @@ const BotaoMais = styled.button`
  }
 `
 const SemHabito = styled.div`
+p{
  height: 74px;
  font-size: 17px;
  font-weight: 400;
  font-family: 'Lexend Deca', sans-serif;
  color: #666666;
+}
 `

@@ -5,6 +5,7 @@ import styled from "styled-components"
 import axios from "axios"
 export default function AddHabito(props) {
     const { setHabitos } = React.useContext(AuthContext)
+    const {habitos} = React.useContext(AuthContext)
     const dias = ["D", "S", "T", "Q", "Q", "S", "S"]
     const [name, setName] = useState("")
     const [days, setDays] = useState([])
@@ -33,7 +34,8 @@ export default function AddHabito(props) {
             console.log(res.data)
             setCarregando(false)
             props.setAbrirFormulario(false)
-            setHabitos(res.data)
+            props.setAbrirLista(true)
+            setHabitos([...habitos, res.data])
          })
          promise.catch((err) => {
             setCarregando(false)
@@ -60,11 +62,16 @@ export default function AddHabito(props) {
 
 
     }
+    function cancelarHabito(e){
+        e.preventDefault()
+        
+        props.setAbrirFormulario(false)
+    }
 
     return (
         <form onSubmit={adicionarHabito}>
             <Formulario>
-                <input
+                <input data-identifier="input-habit-name"
                 disabled={carregando}
                     value={name}
                     onChange={e => setName(e.target.value)}
@@ -73,8 +80,8 @@ export default function AddHabito(props) {
                     {dias.map((d, index) => <DiasSemana disabled={carregando} cor={classe} onClick={() => selecionarDias(index)}>{d}</DiasSemana>)}
                 </ContainerDias>
                 <Botoes>
-                    <p>cancelar</p>
-                    <button type="submit"> salvar</button>
+                    <p data-identifier="cancel-habit-create-btn" onClick={cancelarHabito}>cancelar</p>
+                    <button data-identifier="save-habit-create-btn" type="submit"> salvar</button>
                 </Botoes>
             </Formulario>
         </form>
